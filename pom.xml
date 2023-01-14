@@ -6,19 +6,21 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.0.0-M1</version>
+		<version>3.0.1</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 
 	<groupId>org.rix</groupId>
 	<artifactId>golf_application</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>${revision}</version>
 	<name>golf_application</name>
 	<description>Demo project for Spring Boot</description>
 
 	<packaging>pom</packaging>
 
 	<properties>
+		<revision>1.0.0-SNAPSHOT</revision>
+
 		<java.version>17</java.version>
 	</properties>
 
@@ -41,11 +43,6 @@
 			<artifactId>spring-boot-devtools</artifactId>
 			<scope>runtime</scope>
 			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>com.microsoft.sqlserver</groupId>
-			<artifactId>mssql-jdbc</artifactId>
-			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
@@ -82,9 +79,9 @@
 	</pluginRepositories>
 
 	<modules>
-		<module>golf_entitys</module>
 		<module>golf_controler</module>
-		<module>golf_services</module>
 		<module>golf_jdbc</module>
+		<module>golf_definiton_api</module>
+		<module>golf_services</module>
 	</modules>
 </project>

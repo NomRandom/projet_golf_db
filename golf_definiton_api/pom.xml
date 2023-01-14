@@ -1,0 +1,91 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.rix</groupId>
+		<artifactId>golf_application</artifactId>
+		<version>${revision}</version>
+	</parent>
+
+	<artifactId>golf_definiton_api</artifactId>
+	<name>golf_api</name>
+	<description>Module permettant de définir les apis du projet ainsi que les classes de services</description>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>org.openapitools</groupId>
+			<artifactId>jackson-databind-nullable</artifactId>
+			<version>0.2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-boot-starter</artifactId>
+			<version>3.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.microsoft.sqlserver</groupId>
+			<artifactId>mssql-jdbc</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.openapitools</groupId>
+				<artifactId>openapi-generator-maven-plugin</artifactId>
+				<version>6.2.1</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<id>buildApi</id>
+						<configuration>
+
+							<!-- path to the specification -->
+							<inputSpec>${basedir}/src/main/resources/yaml/api_golfeur.yaml</inputSpec>
+
+							<!--https://openapi-generator.tech/docs/generators/spring -->
+							<generatorName>spring</generatorName>
+							<library>spring-boot</library>
+
+							<modelNameSuffix>${swagger.modelNameSuffix}</modelNameSuffix>
+							<generateApis>true</generateApis>
+							<generateModels>true</generateModels>
+
+							<!-- ... lot of parameters and configuration omitted here, look in 
+								the original file ... -->
+
+							<!-- configuration -->
+							<configOptions>
+								<interfaceOnly>true</interfaceOnly>
+								<useBeanValidation>true</useBeanValidation>
+								<performBeanValidation>true</performBeanValidation>
+								<modelPackage>org.rix.golf.model</modelPackage>
+								<apiPackage>org.rix.golf.controller</apiPackage>
+								<sourceFolder>/src/main/java</sourceFolder>
+								<implFolder>/src/main/java</implFolder>
+								<serializableModel>true</serializableModel>
+								<!-- les deux paramètre suivants sont présent pour permettre la validation 
+									des bean. Ils sont nécessaires pour le moment car la version de spring boot 
+									(v3) et du plugin openAPI (v6.2.1) ne sont pas compatibles sur la génération 
+									des validations -->
+								<!-- en effet, spring boot v3 n'a plus javax.annotation. Le correctif 
+									est présent dans la version 6.3 du plugin (qui est encore en snapshot au 
+									14/01/2023) -->
+								<!-- a modifier par la suite et ajouter la config suivante <useJakartaEe>true</useJakartaEe> -->
+								<useSpringBoot3>true</useSpringBoot3>
+								<useSpringfox>false</useSpringfox>
+							</configOptions>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

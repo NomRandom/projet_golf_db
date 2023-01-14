@@ -1,0 +1,226 @@
+openapi: 3.0.3
+info:
+  title: Swagger Golf - OpenAPI 3.0
+  description: 
+    Swagger pour le projet Golf
+
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: julien.rix@gmail.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.11
+servers:
+  - url: https://localhost:8080
+tags:
+  - name: Golfeur
+    description: Toutes les actions possible pour un golfeur
+paths:
+  /golfeur:
+    post:
+      tags:
+        - Golfeur
+      summary: Ajoute un nouveau golfeur
+      description: Ajoute un nouveau golfeur au sein de la BDD
+      operationId: addGolfeur
+      requestBody:
+        description: Créer un nouveau golfeur au sein du systeme
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Golfeur'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Golfeur'
+        '405':
+          description: Invalid input
+      security:
+        - Golfeurstore_auth:
+            - write:Golfeurs
+            - read:Golfeurs
+  /golfeur/{golfeurId}:
+    get:
+      tags:
+        - Golfeur
+      summary: Recherche un golfeur via son id technique
+      description: Renvoi un unique golfeur
+      operationId: getGolfeurById
+      parameters:
+        - name: golfeurId
+          in: path
+          description: ID du golfeur permettant de l'identifier au sein du SI
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Golfeur'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Golfeur not found
+      security:
+        - api_key: []
+        - Golfeurstore_auth:
+            - write:Golfeurs
+            - read:Golfeurs
+    post:
+      tags:
+        - Golfeur
+      summary: Mise à jour du golfeur
+      description: Mets à jour le golfeur associé à l'id fournit en paramètre 
+      operationId: updateGolfeurWithForm
+      parameters:
+        - name: golfeurId
+          in: path
+          description:  ID du golfeur permettant de l'identifier au sein du SI
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: Créer un nouveau golfeur au sein du systeme
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Golfeur'
+        required: true
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Golfeur not found
+        '405':
+          description: Invalid input
+      security:
+        - Golfeurstore_auth:
+            - write:Golfeurs
+            - read:Golfeurs
+    delete:
+      tags:
+        - Golfeur
+      summary: Supprime le golfeur
+      description: Supprime le golfeur correspondant à l'id fournit
+      operationId: deleteGolfeur
+      parameters:
+        - name: golfeurId
+          in: path
+          description: Golfeur id to delete
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Golfeur not found
+        '405':
+          description: Invalid input
+      security:
+        - Golfeurstore_auth:
+            - write:Golfeurs
+            - read:Golfeurs
+components:
+  schemas:
+ 
+    Golfeur:
+      required:
+        - name
+        - surname
+        - licenceId
+        - mail
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+          description: L'id technique du golfeur
+        name:
+          type: string
+          example: rix
+          description: Le nom du golfeur 
+        surname:
+          type: string
+          example: julien
+          description: Le prénom du golfeur
+        licenceId:
+          type: string
+          example: IUAGEGVHU
+          description: Le numéro de licence du golfeur
+        birthDate:
+          type: string
+          format: date
+          example: "2020-08-10"
+          description: La date de naissance du golfeur
+        handicape:
+          type: number
+          format: double
+          example: 20.6
+          description: L'handicap du golfeur depuis sa dernière mise à jour
+        mail:
+          type: string
+#          format: email
+          example: exemple.mail@test.com
+          description: Adresse mail du golfeur
+      xml:
+        name: golfeur
+    ApiResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        type:
+          type: string
+        message:
+          type: string
+      xml:
+        name: '##default'
+  requestBodies:
+    Golfeur:
+      description: Golfeur object that needs to be added to the store
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Golfeur'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/Golfeur'
+  securitySchemes:
+    Golfeurstore_auth:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://Golfeurstore3.swagger.io/oauth/authorize
+          scopes:
+            write:Golfeurs: modify Golfeurs in your account
+            read:Golfeurs: read your Golfeurs
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header

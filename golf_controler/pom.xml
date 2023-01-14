@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.rix</groupId>
 		<artifactId>golf_application</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>${revision}</version>
 	</parent>
 	<artifactId>golf_controler</artifactId>
 	<name>controler</name>
@@ -14,15 +14,11 @@
 
 	<dependencies>
 		<dependency>
+			<artifactId>golf_services</artifactId>
 			<groupId>org.rix</groupId>
-			<artifactId>golf_entitys</artifactId>
-			<version>${project.version}</version>
+			<version>${revision}</version>
 		</dependency>
-		<dependency>
-			<groupId>org.rix</groupId>
-			<artifactId>golf_jdbc</artifactId>
-			<version>${project.version}</version>
-		</dependency>
+
 	</dependencies>
 
 	<build>

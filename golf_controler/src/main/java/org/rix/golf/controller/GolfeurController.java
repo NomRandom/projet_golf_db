@@ -1,33 +1,48 @@
 package org.rix.golf.controller;
 
-import org.rix.entitys.pojo.Golfeur;
-import org.rix.jdbc.services.GolfeurRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import java.util.Optional;
+
+import org.rix.golf.model.Golfeur;
+import org.rix.golf.model.ModelApiResponse;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.NativeWebRequest;
+
+import jakarta.validation.Valid;
 
 @RestController()
 @RequestMapping(path = "gerer/golfeur")
-public class GolfeurController {
+public class GolfeurController implements GolfeurApi {
 
-	@Autowired
-	private GolfeurRepository golfeurRepository;
-
-	@GetMapping(path = "getByName/{name}")
-	Golfeur getGolfeurByName(@PathVariable(name = "name") String name) {
-
-		return golfeurRepository.findByNom(name);
-
+	@Override
+	public Optional<NativeWebRequest> getRequest() {
+		// TODO Auto-generated method stub
+		return GolfeurApi.super.getRequest();
 	}
 
-	@PostMapping(path = "/save")
-	Golfeur saveGolfeur(@RequestBody Golfeur golfeur) {
+	@Override
+	public ResponseEntity<Golfeur> addGolfeur(@Valid Golfeur golfeur) {
+		// TODO Auto-generated method stub
+		return GolfeurApi.super.addGolfeur(golfeur);
+	}
 
-		return golfeurRepository.save(golfeur);
+	@Override
+	public ResponseEntity<ModelApiResponse> deleteGolfeur(Long golfeurId) {
+		// TODO Auto-generated method stub
+		return GolfeurApi.super.deleteGolfeur(golfeurId);
+	}
+
+	@Override
+	public ResponseEntity<Golfeur> getGolfeurById(Long golfeurId) {
+		// TODO Auto-generated method stub
+		return GolfeurApi.super.getGolfeurById(golfeurId);
+	}
+
+	@Override
+	public ResponseEntity<ModelApiResponse> updateGolfeurWithForm(Long golfeurId, @Valid Golfeur golfeur) {
+		// TODO Auto-generated method stub
+		return GolfeurApi.super.updateGolfeurWithForm(golfeurId, golfeur);
 	}
 
 }
